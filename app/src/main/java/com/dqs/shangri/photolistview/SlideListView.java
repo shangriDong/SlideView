@@ -36,9 +36,19 @@ public class SlideListView {
     private int pos = -1;
     private volatile ImageState imageState = ImageState.ORI;
     private int firstVisiblePos = -1;
+    private int slidingDistance = 200;
 
     public void setSclideTime(int slideTime) {
         this.slideTime = slideTime;
+    }
+
+    //slidingDistance 单位dp
+    public void setSlidingDistance(int slidingDistance) {
+        if (slidingDistance < 0) {
+            this.slidingDistance = dip2px(context, 200);
+            return;
+        }
+        this.slidingDistance = dip2px(context, slidingDistance);
     }
 
     public void init() {
@@ -132,10 +142,10 @@ public class SlideListView {
         }
         imageState = ImageState.SLIDING;
         AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", -dip2px(context, 200), 0.0f);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", -dip2px(context, slidingDistance), 0.0f);
         animator.setDuration(slideTime);
         animatorSet.play(animator);
-        animatorSet.setInterpolator(new MyLinearInterpolator(listView, dip2px(context, 200), false));
+        animatorSet.setInterpolator(new MyLinearInterpolator(listView, dip2px(context, slidingDistance), false));
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -178,12 +188,12 @@ public class SlideListView {
         imageState = ImageState.SLIDING;
         AnimatorSet animatorSet = new AnimatorSet();
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", 0.0f, -dip2px(context, 200));
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", 0.0f, -dip2px(context, slidingDistance));
         animator.setDuration(slideTime);
 
         animatorSet.play(animator);
 
-        animatorSet.setInterpolator(new MyLinearInterpolator(listView, dip2px(context, 200), true));
+        animatorSet.setInterpolator(new MyLinearInterpolator(listView, dip2px(context, slidingDistance), true));
 
         animatorSet.addListener(new Animator.AnimatorListener() {
                                     @Override

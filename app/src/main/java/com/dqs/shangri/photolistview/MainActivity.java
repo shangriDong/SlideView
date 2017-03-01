@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(listApdater);
 
         slideListView = new SlideListView(this, listView, imageView);
+        slideListView.setSlidingDistance(200);
         slideListView.init();
     }
 }
