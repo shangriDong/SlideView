@@ -31,7 +31,7 @@ public class SlideListView {
     private Context context;
     private ListView listView;
     private View view;
-    private int slideTime = 100;
+    private int slideTime = 500;
     private GestureDetector mGestureDetector;
     private int pos = -1;
     private volatile ImageState imageState = ImageState.ORI;
@@ -70,7 +70,8 @@ public class SlideListView {
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if (e2.getY() < dip2px(context, 2)) {
+                log.info("distanceY: " + distanceY);
+                if (e2.getY() < dip2px(context, 20) && (e2.getEventTime() - e1.getEventTime() < 200) && distanceY > dip2px(context, 20)) {
                     hideView();
                     return true;
                 }
@@ -103,8 +104,8 @@ public class SlideListView {
                     case AbsListView.OnScrollListener.SCROLL_STATE_IDLE://空闲状态
                         log.info("空闲状态");
                         if (imageState == ImageState.MOVE && firstVisiblePos == 0) {
-                            log.info("showView");
-                            showView();
+                            //log.info("showView");
+                            //showView();
                         }
                         break;
                     case AbsListView.OnScrollListener.SCROLL_STATE_FLING://滚动状态
@@ -142,10 +143,10 @@ public class SlideListView {
         }
         imageState = ImageState.SLIDING;
         AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", -dip2px(context, slidingDistance), 0.0f);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", -slidingDistance, 0.0f);
         animator.setDuration(slideTime);
         animatorSet.play(animator);
-        animatorSet.setInterpolator(new MyLinearInterpolator(listView, dip2px(context, slidingDistance), false));
+        animatorSet.setInterpolator(new MyLinearInterpolator(listView, slidingDistance, false));
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -188,12 +189,12 @@ public class SlideListView {
         imageState = ImageState.SLIDING;
         AnimatorSet animatorSet = new AnimatorSet();
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", 0.0f, -dip2px(context, slidingDistance));
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "Y", 0.0f, -slidingDistance);
         animator.setDuration(slideTime);
 
         animatorSet.play(animator);
 
-        animatorSet.setInterpolator(new MyLinearInterpolator(listView, dip2px(context, slidingDistance), true));
+        animatorSet.setInterpolator(new MyLinearInterpolator(listView, slidingDistance, true));
 
         animatorSet.addListener(new Animator.AnimatorListener() {
                                     @Override
