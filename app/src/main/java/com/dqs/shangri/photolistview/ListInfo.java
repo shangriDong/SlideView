@@ -7,7 +7,7 @@ package com.dqs.shangri.photolistview;
 public class ListInfo {
     String str;
 
-    public ListInfo(String s) {
-        this.str = s;
+    public ListInfo(String str) {
+        this.str = str;
     }
 }
