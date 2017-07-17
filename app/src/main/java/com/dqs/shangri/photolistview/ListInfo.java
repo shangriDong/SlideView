@@ -1,7 +1,7 @@
 package com.dqs.shangri.photolistview;
 
 /**
- * Created by admin on 2017/3/1.
+ * Created by Shangri on 2017/3/1.
  */
 
 public class ListInfo {
