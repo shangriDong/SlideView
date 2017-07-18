@@ -70,7 +70,8 @@ public class SlideListView {
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                log.info("distanceY: " + distanceY);
+                log.info("distanceY: " + distanceY + "distanceX: " + distanceX);
+
                 if (e2.getY() < dip2px(context, 20) && (e2.getEventTime() - e1.getEventTime() < 200) && distanceY > dip2px(context, 20)) {
                     hideView();
                     return true;
